@@ -1,0 +1,183 @@
+{
+    "Initialize Basic SLiM Script": {
+        "prefix": "init",
+        "body": [
+            "initialize() {",
+            "\tinitializeMutationType(\"m1\", ${1:0.5}, \"f\", ${2:0.0});",
+            "\tinitializeGenomicElementType(\"g1\", m1, 1.0);",
+            "\tinitializeGenomicElement(g1, 0, ${3:999});",
+            "\tinitializeMutationRate(${4:1e-7});",
+            "\tinitializeRecombinationRate(${5:1e-8});",
+            "}"
+        ],
+        "description": "Initialize a basic SLiM simulation"
+    },
+
+    "Initialize Sexual Population": {
+        "prefix": "init-sexual",
+        "body": [
+            "initialize() {",
+            "\tinitializeSex(\"A\");",
+            "\tinitializeMutationType(\"m1\", ${1:0.5}, \"f\", ${2:0.0});",
+            "\tinitializeGenomicElementType(\"g1\", m1, 1.0);",
+            "\tinitializeGenomicElement(g1, 0, ${3:999});",
+            "\tinitializeMutationRate(${4:1e-7});",
+            "\tinitializeRecombinationRate(${5:1e-8});",
+            "}"
+        ],
+        "description": "Initialize a SLiM simulation with sexual reproduction"
+    },
+
+    "Generation Callback": {
+        "prefix": "gen",
+        "body": [
+            "${1:1} {",
+            "\t${2:// Generation code here}",
+            "}"
+        ],
+        "description": "Add a generation callback"
+    },
+
+    "Early Generation Callback": {
+        "prefix": "early",
+        "body": [
+            "${1:1} early() {",
+            "\t${2:// Early generation code here}",
+            "}"
+        ],
+        "description": "Add an early generation callback"
+    },
+
+    "Late Generation Callback": {
+        "prefix": "late",
+        "body": [
+            "${1:1} late() {",
+            "\t${2:// Late generation code here}",
+            "}"
+        ],
+        "description": "Add a late generation callback"
+    },
+
+    "Fitness Callback": {
+        "prefix": "fitness",
+        "body": [
+            "fitness(${1:m1}) {",
+            "\treturn ${2:1.0 + sum(individual.genomes.mutationsOfType(m1))};",
+            "}"
+        ],
+        "description": "Add a fitness callback"
+    },
+
+    "Mating Callback": {
+        "prefix": "mating",
+        "body": [
+            "mating() {",
+            "\tparent1 = subpop.sampleIndividuals(1);",
+            "\tparent2 = subpop.sampleIndividuals(1);",
+            "\treturn c(parent1.index, parent2.index);",
+            "}"
+        ],
+        "description": "Add a mating callback"
+    },
+
+    "Mutation Type": {
+        "prefix": "muttype",
+        "body": [
+            "initializeMutationType(\"${1:m1}\", ${2:0.5}, \"${3:f}\", ${4:0.0});"
+        ],
+        "description": "Initialize a mutation type"
+    },
+
+    "Add Subpopulation": {
+        "prefix": "addsubpop",
+        "body": [
+            "sim.addSubpop(\"${1:p1}\", ${2:500});"
+        ],
+        "description": "Add a subpopulation"
+    },
+
+    "Sample Individuals": {
+        "prefix": "sample",
+        "body": [
+            "${1:p1}.sampleIndividuals(${2:10});"
+        ],
+        "description": "Sample individuals from a population"
+    },
+
+    "Output Statistics": {
+        "prefix": "stats",
+        "body": [
+            "stats = sim.summarizeStats();",
+            "catn(\"Generation: \" + sim.generation);",
+            "catn(\"Population size: \" + size(sim.subpopulations.individuals));",
+            "catn(\"Number of mutations: \" + size(sim.mutations));"
+        ],
+        "description": "Output basic simulation statistics"
+    },
+
+    "Save Population": {
+        "prefix": "save",
+        "body": [
+            "sim.outputFull(\"${1:pop_gen_}\" + sim.generation + \".txt\");"
+        ],
+        "description": "Save full population state"
+    },
+
+    "For Loop": {
+        "prefix": "for",
+        "body": [
+            "for (${1:i} in ${2:0:9}) {",
+            "\t${3:// code}",
+            "}"
+        ],
+        "description": "For loop in Eidos"
+    },
+
+    "If Statement": {
+        "prefix": "if",
+        "body": [
+            "if (${1:condition}) {",
+            "\t${2:// code}",
+            "}"
+        ],
+        "description": "If statement in Eidos"
+    },
+
+    "While Loop": {
+        "prefix": "while",
+        "body": [
+            "while (${1:condition}) {",
+            "\t${2:// code}",
+            "}"
+        ],
+        "description": "While loop in Eidos"
+    },
+
+    "Spatial Population": {
+        "prefix": "spatial",
+        "body": [
+            "initialize() {",
+            "\tinitializeSLiMOptions(dimensionality=\"${1:xy}\");",
+            "\tinitializeMutationType(\"m1\", 0.5, \"f\", 0.0);",
+            "\tinitializeGenomicElementType(\"g1\", m1, 1.0);",
+            "\tinitializeGenomicElement(g1, 0, 999);",
+            "\tinitializeMutationRate(1e-7);",
+            "\tinitializeRecombinationRate(1e-8);",
+            "}",
+            "",
+            "1 early() {",
+            "\tsim.addSubpop(\"p1\", 500);",
+            "\tp1.setSpatialBounds(c(${2:0.0}, ${3:0.0}), c(${4:10.0}, ${5:10.0}));",
+            "}"
+        ],
+        "description": "Initialize a spatial population"
+    },
+
+    "Migration Rate": {
+        "prefix": "migrate",
+        "body": [
+            "${1:p1}.setMigrationRates(${2:p2}, ${3:0.1});"
+        ],
+        "description": "Set migration rate between populations"
+    }
+} 

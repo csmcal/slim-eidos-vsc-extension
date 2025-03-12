@@ -1,0 +1,100 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "eidos",
+	"scopeName": "source.eidos",
+	"fileTypes": ["slim", "txt"],
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#storage-types"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#builtin-functions"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#braces"
+		},
+		{
+			"include": "#punctuation"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.double-slash.eidos",
+				"match": "//.*$"
+			}, {
+				"name": "comment.block.eidos",
+				"begin": "/\\*",
+				"end": "\\*/"
+			}]
+		},
+		"constants": {
+			"name": "support.constant.eidos",
+			"match": "\\b(TRUE|FALSE|NULL|NA|NA_integer_|NA_real_|NA_complex_|NA_character_|Inf|NaN)\\b"
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.eidos",
+				"match": "\\b(ancestor|initialize|late|early|fitness|subpop|reproduction|mate|mateChoice|modifyChild|spatialInteractions|select|mutate|heredity|recombination|pedigree|interaction|death|epoch|defineConstant|setSeed|timeInGenerations|timeInBurnins|timeInEpochs|print|if|else|break|next|return|repeat|for|while|in)\\b"
+			}]
+		},
+		"storage-types": {
+			"name": "storage.type.eidos",
+			"match": "\\b(void|character|complex|double|expression|integer|list|logical|numeric|single|raw)\\b\\s*(?=\\()"
+		},
+		"functions": {
+			"name": "entity.name.function.eidos",
+			"match": "\\b[a-zA-Z._][a-zA-Z0-9._]*\\s*(?=\\()"
+		},
+		"builtin-functions": {
+			"name": "support.function.eidos",
+			"match": "\\b(in|length|startsWith|endsWith|substring|split|indexOf|replace|abs|sum|mean|sd|which|sapply|range|c|seq|rep|randomInteger|randomUniform|randomExponential|randomNormal|randomPoisson|randomBinomial|randomGeometric|pickChromosome|mutate|recombine|genomeSize|chromosomeLength|individualCount)\\b"
+		},
+		"strings": {
+			"name": "string.quoted.double.eidos",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [{
+				"name": "constant.character.escape.eidos",
+				"match": "\\\\."
+			}]
+		},
+		"numbers": {
+			"match": "\\b(\\d*\\.\\d+([eE][+-]?\\d+)?|\\d+\\.\\d*([eE][+-]?\\d+)?|\\d+[eE][+-]?\\d+|\\d+)\\b",
+			"name": "constant.numeric.eidos"
+		},
+		"operators": {
+			"name": "keyword.operator.eidos",
+			"match": "\\b(==|!=|<=?|>=?|\\+|\\-|\\*|\\/|\\^|&&|\\|\\||!|:=|<<-|->>|\\.\\.\\.|:|\\$)\\b|\\.(?=\\w)"
+		},
+		"braces": {
+			"match": "[\\[\\](){}]",
+			"name": "bracket.eidos"
+		},
+		"punctuation": {
+			"match": "\\.|,|;|:",
+			"name": "punctuation.eidos"
+		}
+	}
+}

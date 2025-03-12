@@ -1,0 +1,70 @@
+{
+  "name": "slim-eidos",
+  "displayName": "SLiM-Eidos",
+  "description": "For highlighting grammar in Eidos scripting language files for SLiM simulations",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.87.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "eidos",
+      "aliases": ["slim", "eidos"],
+      "extensions": [".slim"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "eidos",
+      "scopeName": "source.eidos",
+      "path": "./syntaxes/eidos.tmLanguage.json"
+    }],
+    "configuration": {
+      "title": "SLiM-Eidos",
+      "properties": {
+        "slim-eidos.enableHoverDocs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover documentation for functions and methods"
+        },
+        "slim-eidos.enableAutoCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable code completion suggestions"
+        },
+        "slim-eidos.validateSyntax": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable basic syntax validation"
+        }
+      }
+    }
+  },
+  "activationEvents": [
+    "onLanguage:eidos"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^16.x",
+    "@types/vscode": "^1.87.0",
+    "@vscode/test-electron": "^2.3.9",
+    "typescript": "^5.0.0",
+    "glob": "^10.3.10"
+  },
+  "capabilities": {
+    "completionProvider": {
+      "resolveProvider": true,
+      "triggerCharacters": ["."]
+    }
+  }
+}

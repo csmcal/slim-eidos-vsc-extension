@@ -1,0 +1,41 @@
+{
+    "comments": {
+        // symbol used for single line comment
+        "lineComment": "//",
+        // symbols used for start and end a block comment
+        "blockComment": [ "/*", "*/" ]
+    },
+    // symbols used as brackets
+    "brackets": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "\"", "close": "\"" },
+        { "open": "'", "close": "'" }
+    ],
+    // symbols that can be used to surround a selection
+    "surroundingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""],
+        ["'", "'"]
+    ],
+    // automatically adjust the indentation level based on the context
+    "smartIndent": true,
+    "folding": {
+        "markers": {
+            "start": "^\\s*//\\s*#?region\\b",
+            "end": "^\\s*//\\s*#?endregion\\b"
+        }
+    },
+    // the regular expression pattern used for detecting words in the language
+    // "wordPattern": "/(-?\\d*\\.\\d\\w*)|([\\w\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF_.][\\w\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF\\d_.]*)/g"
+    "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)"
+}
