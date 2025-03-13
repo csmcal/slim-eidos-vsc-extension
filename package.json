@@ -66,5 +66,13 @@
       "resolveProvider": true,
       "triggerCharacters": ["."]
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csmcal/slim-eidos-vsc-extension.git"
+  },
+  "author": {
+    "name": "Christopher McAllester",
+    "email": "cmcallester@gmail.com"
   }
 }
