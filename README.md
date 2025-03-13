@@ -56,7 +56,7 @@ Currently, there are two methods to install the extension:
    - Click Install
 
 2. **Manual Installation**
-   - Download a .vsix file from the [latest release](https://github.com/cmcallester/slim-eidos-vsc-extension/releases/)
+   - Download a .vsix file from the [latest release](https://github.com/csmcal/slim-eidos-vsc-extension/releases/)
    - Open VS Code
    - Press Ctrl+Shift+P and type "Install from VSIX"
    - Select the downloaded .vsix file
