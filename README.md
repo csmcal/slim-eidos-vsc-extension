@@ -40,7 +40,7 @@ There are several ways to use this extension:
 ### Development/Testing
 If you want to test the extension or contribute improvements:
 1. Clone this repository
-2. Install [Node.js](https://nodejs.org/) if you haven't already
+2. Install [Node.js](https://nodejs.org/) if not installed
 3. Open the extension folder in VS Code
 4. Run `npm install` to install dependencies
 5. Run `npm run vscode:prepublish` (or `npm run compile` from terminal)
@@ -51,14 +51,14 @@ Currently, there are two methods to install the extension:
 
 1. **VS Code Marketplace** (Recommended if available, should be up soon)
    - Open VS Code
-   - Click the Extensions icon in the sidebar (or press Ctrl+Shift+X)
+   - Click the Extensions icon in the sidebar (or press Ctrl/Command+Shift+X)
    - Search for "slim-eidos"
    - Click Install
 
 2. **Manual Installation**
    - Download a .vsix file from the [latest release](https://github.com/csmcal/slim-eidos-vsc-extension/releases/)
    - Open VS Code
-   - Press Ctrl+Shift+P and type "Install from VSIX"
+   - Press Ctrl/Command+Shift+P and type "Install from VSIX"
    - Select the downloaded .vsix file
 
 ## Release Notes
