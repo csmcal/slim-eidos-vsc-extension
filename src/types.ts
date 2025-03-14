@@ -6,6 +6,7 @@ export interface DocumentationItem {
 }
 
 export interface SLiMObject {
+    description: string;
     methods: { [key: string]: DocumentationItem };
     properties: { [key: string]: DocumentationItem };
 }
@@ -13,4 +14,4 @@ export interface SLiMObject {
 export interface EidosDocumentation {
     functions: { [key: string]: DocumentationItem };
     objects: { [key: string]: SLiMObject };
-} 
+}
