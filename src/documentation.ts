@@ -335,6 +335,520 @@ export const eidosDoc: EidosDocumentation = {
             description: 'Returns the current simulation time',
             returns: 'float',
             example: 'time = clock();'
+        },
+
+        // Add these core language functions
+        'size': {
+            description: 'Returns the length of a vector or string',
+            parameters: {
+                'x': 'Vector or string to measure'
+            },
+            returns: 'integer',
+            example: 'size(c(1,2,3)); // 3'
+        },
+        'rep': {
+            description: 'Repeats a value or vector multiple times',
+            parameters: {
+                'x': 'Value to repeat',
+                'count': 'Number of times to repeat'
+            },
+            returns: 'vector',
+            example: 'rep(5, 3); // c(5,5,5)'
+        },
+        'sapply': {
+            description: 'Applies a function to each element of a vector',
+            parameters: {
+                'x': 'Vector to process',
+                'lambda': 'Function to apply'
+            },
+            returns: 'vector',
+            example: 'sapply(1:3, "applyValue * 2;"); // c(2,4,6)'
+        },
+        
+        // Add these mathematical functions
+        'log': {
+            description: 'Calculates the natural logarithm',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'float',
+            example: 'log(2.718); // ~1.0'
+        },
+        'exp': {
+            description: 'Calculates e raised to the power',
+            parameters: {
+                'x': 'Power to raise e to'
+            },
+            returns: 'float',
+            example: 'exp(1); // 2.718...'
+        },
+
+        // Add these type checking functions
+        'isFloat': {
+            description: 'Tests if a value is a float',
+            parameters: {
+                'x': 'Value to test'
+            },
+            returns: 'logical',
+            example: 'isFloat(3.14);'
+        },
+        'isInteger': {
+            description: 'Tests if a value is an integer',
+            parameters: {
+                'x': 'Value to test'
+            },
+            returns: 'logical',
+            example: 'isInteger(42);'
+        },
+
+        // Flow control functions
+        'apply': {
+            description: 'Applies a function to each element, allowing early exit',
+            parameters: {
+                'x': 'Vector to process',
+                'lambda': 'Function to apply'
+            },
+            returns: 'void',
+            example: 'apply(1:3, "if (applyValue > 2) stop(); print(applyValue);");'
+        },
+        'doCall': {
+            description: 'Calls a function with arguments supplied as a vector',
+            parameters: {
+                'functionName': 'Name of function to call',
+                'arguments': 'Vector of arguments'
+            },
+            returns: 'any',
+            example: 'doCall("mean", list(c(1,2,3)));'
+        },
+
+        // Vector manipulation
+        'sample': {
+            description: 'Randomly samples elements from a vector',
+            parameters: {
+                'x': 'Vector to sample from',
+                'size': 'Number of elements to sample',
+                'replace': '(optional) Whether to sample with replacement'
+            },
+            returns: 'vector',
+            example: 'sample(1:10, 5, F); // 5 unique numbers'
+        },
+        'match': {
+            description: 'Returns positions of first matches of elements',
+            parameters: {
+                'x': 'Values to match',
+                'table': 'Values to match against'
+            },
+            returns: 'integer[]',
+            example: 'match(c(1,2,3), c(2,3,4)); // c(NA,1,2)'
+        },
+
+        // Additional math functions
+        'round': {
+            description: 'Rounds numbers to specified decimal places',
+            parameters: {
+                'x': 'Number(s) to round',
+                'digits': '(optional) Number of decimal places'
+            },
+            returns: 'float',
+            example: 'round(3.14159, 2); // 3.14'
+        },
+        'rbinom': {
+            description: 'Generates random binomial variates',
+            parameters: {
+                'n': 'Number of trials',
+                'size': 'Size parameter',
+                'prob': 'Probability of success'
+            },
+            returns: 'integer[]',
+            example: 'rbinom(10, 1, 0.5); // 10 coin flips'
+        },
+
+        // Trigonometric functions
+        'sin': {
+            description: 'Calculates the sine of an angle (in radians)',
+            parameters: {
+                'x': 'Angle in radians'
+            },
+            returns: 'float',
+            example: 'sin(3.14159/2); // ~1.0'
+        },
+        'cos': {
+            description: 'Calculates the cosine of an angle (in radians)',
+            parameters: {
+                'x': 'Angle in radians'
+            },
+            returns: 'float',
+            example: 'cos(0.0); // 1.0'
+        },
+        
+        // Additional initialization functions
+        'initializeRecombinationRate': {
+            description: 'Sets the recombination rate between positions',
+            parameters: {
+                'rates': 'Vector of rates',
+                'ends': 'Vector of end positions'
+            },
+            returns: 'void',
+            example: 'initializeRecombinationRate(c(1e-8), c(1e6));'
+        },
+        'initializeInteractionType': {
+            description: 'Defines a new interaction type for social interactions',
+            parameters: {
+                'id': 'Identifier for interaction type',
+                'maxDistance': 'Maximum interaction distance',
+                'reciprocal': '(optional) Whether interaction is reciprocal'
+            },
+            returns: 'void',
+            example: 'initializeInteractionType("i1", 1.0);'
+        },
+
+        // Additional statistical functions
+        'quantile': {
+            description: 'Calculates sample quantiles of a vector',
+            parameters: {
+                'x': 'Numeric vector',
+                'probs': 'Vector of probabilities'
+            },
+            returns: 'float[]',
+            example: 'quantile(x, c(0.25, 0.5, 0.75));'
+        },
+        'cor': {
+            description: 'Calculates correlation between vectors',
+            parameters: {
+                'x': 'First numeric vector',
+                'y': 'Second numeric vector'
+            },
+            returns: 'float',
+            example: 'cor(x, y);'
+        },
+
+        // Matrix operations
+        'matrix': {
+            description: 'Creates a matrix from a vector',
+            parameters: {
+                'x': 'Vector of values',
+                'nrow': 'Number of rows',
+                'ncol': 'Number of columns',
+                'byrow': '(optional) Fill by row instead of column'
+            },
+            returns: 'matrix',
+            example: 'matrix(1:6, 2, 3); // 2x3 matrix'
+        },
+        'cbind': {
+            description: 'Combines vectors/matrices by columns',
+            parameters: {
+                'x': 'First vector/matrix',
+                'y': 'Second vector/matrix'
+            },
+            returns: 'matrix',
+            example: 'cbind(c(1,2), c(3,4)); // 2x2 matrix'
+        },
+        'rbind': {
+            description: 'Combines vectors/matrices by rows',
+            parameters: {
+                'x': 'First vector/matrix',
+                'y': 'Second vector/matrix'
+            },
+            returns: 'matrix',
+            example: 'rbind(c(1,2), c(3,4)); // 2x2 matrix'
+        },
+
+        // Advanced vector operations
+        'rev': {
+            description: 'Reverses elements in a vector',
+            parameters: {
+                'x': 'Vector to reverse'
+            },
+            returns: 'vector',
+            example: 'rev(1:5); // c(5,4,3,2,1)'
+        },
+        'sort': {
+            description: 'Sorts elements in a vector',
+            parameters: {
+                'x': 'Vector to sort',
+                'decreasing': '(optional) Sort in decreasing order'
+            },
+            returns: 'vector',
+            example: 'sort(c(3,1,4,2)); // c(1,2,3,4)'
+        },
+
+        // Tree sequence recording
+        'initializeTreeSeq': {
+            description: 'Initializes tree sequence recording',
+            parameters: {
+                'simplify': '(optional) Whether to simplify recorded trees',
+                'retainCoalescentOnly': '(optional) Record only coalescent events'
+            },
+            returns: 'void',
+            example: 'initializeTreeSeq(T);'
+        },
+        'treeSeqOutput': {
+            description: 'Writes tree sequence to a file',
+            parameters: {
+                'path': 'Path to output file',
+                'simplify': '(optional) Whether to simplify before output'
+            },
+            returns: 'void',
+            example: 'treeSeqOutput("trees.trees");'
+        },
+
+        // Advanced I/O
+        'writeFile': {
+            description: 'Writes data to a file with options',
+            parameters: {
+                'path': 'File path',
+                'contents': 'Data to write',
+                'append': '(optional) Whether to append',
+                'compress': '(optional) Whether to compress output'
+            },
+            returns: 'void',
+            example: 'writeFile("data.gz", "content", F, T);'
+        },
+        'readDirectory': {
+            description: 'Lists files in a directory',
+            parameters: {
+                'path': 'Directory path',
+                'pattern': '(optional) File pattern to match'
+            },
+            returns: 'string[]',
+            example: 'readDirectory(".", "*.txt");'
+        },
+
+        // Additional math functions
+        'log10': {
+            description: 'Calculates base-10 logarithm',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'float',
+            example: 'log10(100); // 2.0'
+        },
+        'pow': {
+            description: 'Raises a number to a power',
+            parameters: {
+                'base': 'Base value',
+                'exponent': 'Exponent value'
+            },
+            returns: 'float',
+            example: 'pow(2, 3); // 8'
+        },
+
+        // Advanced vector operations
+        'cumsum': {
+            description: 'Calculates cumulative sums of vector elements',
+            parameters: {
+                'x': 'Numeric vector'
+            },
+            returns: 'numeric[]',
+            example: 'cumsum(c(1,2,3)); // c(1,3,6)'
+        },
+        'diff': {
+            description: 'Calculates differences between consecutive elements',
+            parameters: {
+                'x': 'Numeric vector',
+                'lag': '(optional) Gap between elements'
+            },
+            returns: 'numeric[]',
+            example: 'diff(c(1,3,6,10)); // c(2,3,4)'
+        },
+        'intersect': {
+            description: 'Returns common elements between vectors',
+            parameters: {
+                'x': 'First vector',
+                'y': 'Second vector'
+            },
+            returns: 'vector',
+            example: 'intersect(1:5, 3:7); // c(3,4,5)'
+        },
+        'setDiff': {
+            description: 'Returns elements in x but not in y',
+            parameters: {
+                'x': 'First vector',
+                'y': 'Second vector'
+            },
+            returns: 'vector',
+            example: 'setDiff(1:5, 3:7); // c(1,2)'
+        },
+
+        // Advanced mathematical functions
+        'factorial': {
+            description: 'Calculates factorial of a number',
+            parameters: {
+                'x': 'Non-negative integer'
+            },
+            returns: 'integer',
+            example: 'factorial(5); // 120'
+        },
+        'choose': {
+            description: 'Calculates binomial coefficients',
+            parameters: {
+                'n': 'Number of items',
+                'k': 'Number to choose'
+            },
+            returns: 'integer',
+            example: 'choose(5, 2); // 10'
+        },
+        'ceiling': {
+            description: 'Rounds up to the nearest integer',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'integer',
+            example: 'ceiling(3.1); // 4'
+        },
+        'floor': {
+            description: 'Rounds down to the nearest integer',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'integer',
+            example: 'floor(3.9); // 3'
+        },
+
+        // Matrix math operations
+        'det': {
+            description: 'Calculates determinant of a matrix',
+            parameters: {
+                'x': 'Square matrix'
+            },
+            returns: 'float',
+            example: 'det(matrix(c(1,2,3,4), 2, 2));'
+        },
+        'solve': {
+            description: 'Solves a system of linear equations',
+            parameters: {
+                'a': 'Coefficient matrix',
+                'b': 'Right-hand side vector'
+            },
+            returns: 'numeric[]',
+            example: 'solve(matrix(c(1,1,1,-1), 2, 2), c(2,0));'
+        },
+
+        // Enhanced I/O operations
+        'writeCSV': {
+            description: 'Writes data to a CSV file',
+            parameters: {
+                'x': 'Data to write',
+                'path': 'File path',
+                'header': '(optional) Include header row',
+                'sep': '(optional) Field separator'
+            },
+            returns: 'void',
+            example: 'writeCSV(data, "output.csv", T, ",");'
+        },
+        'readCSV': {
+            description: 'Reads data from a CSV file',
+            parameters: {
+                'path': 'File path',
+                'header': '(optional) File has header',
+                'sep': '(optional) Field separator'
+            },
+            returns: 'matrix',
+            example: 'data = readCSV("input.csv", T);'
+        },
+        'writeJSON': {
+            description: 'Writes data in JSON format',
+            parameters: {
+                'x': 'Data to write',
+                'path': 'File path',
+                'pretty': '(optional) Pretty print'
+            },
+            returns: 'void',
+            example: 'writeJSON(data, "output.json", T);'
+        },
+
+        // Advanced vector statistics
+        'median': {
+            description: 'Calculates the median value of a vector',
+            parameters: {
+                'x': 'Numeric vector'
+            },
+            returns: 'float',
+            example: 'median(c(1,2,3,4)); // 2.5'
+        },
+        'mode': {
+            description: 'Finds the most frequent value(s) in a vector',
+            parameters: {
+                'x': 'Vector to analyze'
+            },
+            returns: 'vector',
+            example: 'mode(c(1,2,2,3)); // 2'
+        },
+        'rank': {
+            description: 'Returns ranks of elements in a vector',
+            parameters: {
+                'x': 'Vector to rank',
+                'ties.method': '(optional) Method for handling ties ("average", "min", "max")'
+            },
+            returns: 'numeric[]',
+            example: 'rank(c(3,1,4,1,5)); // c(3,1.5,4,1.5,5)'
+        },
+
+        // Advanced mathematical operations
+        'gamma': {
+            description: 'Calculates the gamma function',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'float',
+            example: 'gamma(5); // 24'
+        },
+        'lgamma': {
+            description: 'Calculates the natural log of the gamma function',
+            parameters: {
+                'x': 'Numeric value'
+            },
+            returns: 'float',
+            example: 'lgamma(5); // ~3.178'
+        },
+
+        // Enhanced tree sequence operations
+        'treeSeqSimplify': {
+            description: 'Simplifies tree sequence with advanced options',
+            parameters: {
+                'ts': 'Tree sequence object',
+                'samples': 'Sample nodes to preserve',
+                'filter_sites': '(optional) Whether to filter sites',
+                'filter_populations': '(optional) Whether to filter populations'
+            },
+            returns: 'TreeSequence',
+            example: 'treeSeqSimplify(ts, samples, T, T);'
+        },
+        'treeSeqMutations': {
+            description: 'Extracts mutation information from tree sequence',
+            parameters: {
+                'ts': 'Tree sequence object',
+                'site_id': '(optional) Specific site to query'
+            },
+            returns: 'dictionary',
+            example: 'treeSeqMutations(ts);'
+        },
+
+        // Advanced I/O operations
+        'writeTable': {
+            description: 'Writes a matrix or data frame to a file',
+            parameters: {
+                'x': 'Data to write',
+                'file': 'File path',
+                'row.names': '(optional) Include row names',
+                'col.names': '(optional) Include column names',
+                'quote': '(optional) Quote strings',
+                'sep': '(optional) Field separator'
+            },
+            returns: 'void',
+            example: 'writeTable(data, "output.txt", T, T, T, "\t");'
+        },
+        'readTable': {
+            description: 'Reads a table from a file with advanced options',
+            parameters: {
+                'file': 'File path',
+                'header': '(optional) Has header',
+                'sep': '(optional) Field separator',
+                'skip': '(optional) Lines to skip',
+                'comment.char': '(optional) Comment character'
+            },
+            returns: 'matrix',
+            example: 'readTable("input.txt", T, "\t", 1, "#");'
         }
     },
     objects: {
@@ -357,6 +871,50 @@ export const eidosDoc: EidosDocumentation = {
                     },
                     returns: 'float',
                     example: 'ind.fitness = 0.8;'
+                },
+                'tag': {
+                    description: 'Get or set a custom tag value for the individual',
+                    parameters: {
+                        'value': '(optional) New tag value'
+                    },
+                    returns: 'integer',
+                    example: 'ind.tag = 5;'
+                },
+                'spatialPosition': {
+                    description: 'Get or set spatial coordinates of the individual',
+                    parameters: {
+                        'x': 'X coordinate',
+                        'y': 'Y coordinate',
+                        'z': '(optional) Z coordinate'
+                    },
+                    returns: 'float[]',
+                    example: 'ind.spatialPosition = c(0.5, 1.0);'
+                },
+                'relatedness': {
+                    description: 'Calculates genetic relatedness with another individual',
+                    parameters: {
+                        'other': 'Individual to compare with'
+                    },
+                    returns: 'float',
+                    example: 'ind1.relatedness(ind2);'
+                },
+                'getNearestNeighbors': {
+                    description: 'Finds nearest neighboring individuals',
+                    parameters: {
+                        'count': 'Number of neighbors to find',
+                        'maxDistance': '(optional) Maximum search distance'
+                    },
+                    returns: 'Individual[]',
+                    example: 'ind.getNearestNeighbors(5, 1.0);'
+                },
+                'getInteractionValue': {
+                    description: 'Gets interaction strength with another individual',
+                    parameters: {
+                        'other': 'Individual to interact with',
+                        'interactionType': 'Type of interaction'
+                    },
+                    returns: 'float',
+                    example: 'ind1.getInteractionValue(ind2, "i1");'
                 }
             },
             properties: {
@@ -367,6 +925,14 @@ export const eidosDoc: EidosDocumentation = {
                 'index': {
                     description: 'Index in the subpopulation',
                     returns: 'integer'
+                },
+                'sex': {
+                    description: 'Sex of the individual ("M" or "F")',
+                    returns: 'string'
+                },
+                'subpopulation': {
+                    description: 'Subpopulation the individual belongs to',
+                    returns: 'Subpopulation'
                 }
             }
         },
@@ -463,6 +1029,22 @@ export const eidosDoc: EidosDocumentation = {
                     description: 'Counts mutations in the genome',
                     returns: 'integer',
                     example: 'genome1.countOfMutations();'
+                },
+                'containsMutations': {
+                    description: 'Tests if genome contains specific mutations',
+                    parameters: {
+                        'mutations': 'Mutations to check for'
+                    },
+                    returns: 'logical[]',
+                    example: 'genome1.containsMutations(muts);'
+                },
+                'mutationsOfType': {
+                    description: 'Returns mutations of specified type',
+                    parameters: {
+                        'mutType': 'Mutation type to filter for'
+                    },
+                    returns: 'Mutation[]',
+                    example: 'genome1.mutationsOfType(m1);'
                 }
             },
             properties: {
@@ -501,6 +1083,53 @@ export const eidosDoc: EidosDocumentation = {
                     description: 'Returns cached fitness values for the subpopulation',
                     returns: 'float[]',
                     example: 'p1.cachedFitness();'
+                },
+                'setSpatialBounds': {
+                    description: 'Sets the spatial boundaries of the subpopulation',
+                    parameters: {
+                        'minX': 'Minimum X coordinate',
+                        'maxX': 'Maximum X coordinate',
+                        'minY': 'Minimum Y coordinate',
+                        'maxY': 'Maximum Y coordinate'
+                    },
+                    returns: 'void',
+                    example: 'p1.setSpatialBounds(0.0, 1.0, 0.0, 1.0);'
+                },
+                'setSubpopulationSize': {
+                    description: 'Sets the target size of the subpopulation',
+                    parameters: {
+                        'size': 'New target size'
+                    },
+                    returns: 'void',
+                    example: 'p1.setSubpopulationSize(500);'
+                },
+                'sampleIndividuals': {
+                    description: 'Randomly samples individuals from the subpopulation',
+                    parameters: {
+                        'n': 'Number of individuals to sample',
+                        'replace': '(optional) Whether to sample with replacement'
+                    },
+                    returns: 'Individual[]',
+                    example: 'p1.sampleIndividuals(10);'
+                },
+                'defineSpatialMap': {
+                    description: 'Defines a spatial map for the subpopulation',
+                    parameters: {
+                        'name': 'Name of the map',
+                        'values': 'Matrix of values',
+                        'interpolate': '(optional) Whether to interpolate values'
+                    },
+                    returns: 'void',
+                    example: 'p1.defineSpatialMap("resources", matrix);'
+                },
+                'pointInBounds': {
+                    description: 'Tests if a point is within subpopulation bounds',
+                    parameters: {
+                        'x': 'X coordinate',
+                        'y': 'Y coordinate'
+                    },
+                    returns: 'logical',
+                    example: 'p1.pointInBounds(0.5, 0.5);'
                 }
             },
             properties: {
@@ -515,6 +1144,10 @@ export const eidosDoc: EidosDocumentation = {
                 'genomes': {
                     description: 'All genomes in the subpopulation',
                     returns: 'Genome[]'
+                },
+                'spatialBounds': {
+                    description: 'Current spatial boundaries of the subpopulation',
+                    returns: 'float[]'
                 }
             }
         },
@@ -601,6 +1234,196 @@ export const eidosDoc: EidosDocumentation = {
                 'type': {
                     description: 'Type of genomic element',
                     returns: 'GenomicElementType'
+                }
+            }
+        },
+        'GenomicElementType': {
+            methods: {
+                'setMutationTypes': {
+                    description: 'Sets mutation types and their proportions',
+                    parameters: {
+                        'mutTypes': 'Vector of mutation types',
+                        'proportions': 'Vector of proportions'
+                    },
+                    returns: 'void',
+                    example: 'g1.setMutationTypes(c(m1,m2), c(0.8,0.2));'
+                }
+            },
+            properties: {
+                'id': {
+                    description: 'Identifier of the genomic element type',
+                    returns: 'string'
+                },
+                'mutationTypes': {
+                    description: 'Vector of mutation types used by this element',
+                    returns: 'MutationType[]'
+                }
+            }
+        },
+        'TreeSequence': {
+            methods: {
+                'simplify': {
+                    description: 'Simplifies the recorded tree sequence',
+                    parameters: {
+                        'preserveNodes': '(optional) Nodes to preserve'
+                    },
+                    returns: 'void',
+                    example: 'ts.simplify(individuals.genomes);'
+                },
+                'nodeTable': {
+                    description: 'Returns the node table of the tree sequence',
+                    returns: 'dictionary',
+                    example: 'ts.nodeTable();'
+                },
+                'mutationTable': {
+                    description: 'Returns the mutation table of the tree sequence',
+                    returns: 'dictionary',
+                    example: 'ts.mutationTable();'
+                },
+                'siteTable': {
+                    description: 'Returns the site table of the tree sequence',
+                    returns: 'dictionary',
+                    example: 'ts.siteTable();'
+                },
+                'individualTable': {
+                    description: 'Returns the individual table of the tree sequence',
+                    returns: 'dictionary',
+                    example: 'ts.individualTable();'
+                },
+                'computeStatistics': {
+                    description: 'Computes population genetic statistics',
+                    parameters: {
+                        'statistic': 'Name of statistic to compute',
+                        'windows': '(optional) Windows for computation',
+                        'mode': '(optional) Computation mode'
+                    },
+                    returns: 'numeric[]',
+                    example: 'ts.computeStatistics("diversity", windows);'
+                }
+            },
+            properties: {
+                'numTrees': {
+                    description: 'Number of trees in the sequence',
+                    returns: 'integer'
+                },
+                'sequenceLength': {
+                    description: 'Length of the genomic sequence',
+                    returns: 'float'
+                }
+            }
+        },
+        'Matrix': {
+            methods: {
+                'dim': {
+                    description: 'Gets dimensions of the matrix',
+                    returns: 'integer[2]',
+                    example: 'matrix.dim();'
+                },
+                'transpose': {
+                    description: 'Transposes the matrix',
+                    returns: 'matrix',
+                    example: 'matrix.transpose();'
+                },
+                'multiply': {
+                    description: 'Multiplies with another matrix',
+                    parameters: {
+                        'other': 'Matrix to multiply with'
+                    },
+                    returns: 'matrix',
+                    example: 'matrix1.multiply(matrix2);'
+                },
+                'eigenvalues': {
+                    description: 'Calculates eigenvalues of the matrix',
+                    returns: 'numeric[]',
+                    example: 'matrix.eigenvalues();'
+                },
+                'inverse': {
+                    description: 'Calculates inverse of the matrix',
+                    returns: 'matrix',
+                    example: 'matrix.inverse();'
+                },
+                'rowSums': {
+                    description: 'Calculates sums of each row',
+                    returns: 'numeric[]',
+                    example: 'matrix.rowSums();'
+                },
+                'colSums': {
+                    description: 'Calculates sums of each column',
+                    returns: 'numeric[]',
+                    example: 'matrix.colSums();'
+                }
+            },
+            properties: {
+                'isSymmetric': {
+                    description: 'Whether the matrix is symmetric',
+                    returns: 'logical'
+                },
+                'diagonal': {
+                    description: 'Diagonal elements of the matrix',
+                    returns: 'numeric[]'
+                }
+            }
+        },
+        'File': {
+            methods: {
+                'seek': {
+                    description: 'Moves file pointer to specified position',
+                    parameters: {
+                        'offset': 'Byte offset',
+                        'origin': '(optional) Reference position'
+                    },
+                    returns: 'void',
+                    example: 'file.seek(100);'
+                },
+                'flush': {
+                    description: 'Flushes file buffer to disk',
+                    returns: 'void',
+                    example: 'file.flush();'
+                },
+                'readLines': {
+                    description: 'Reads specified number of lines',
+                    parameters: {
+                        'n': '(optional) Number of lines to read'
+                    },
+                    returns: 'string[]',
+                    example: 'file.readLines(10);'
+                },
+                'readBlock': {
+                    description: 'Reads a block of bytes from file',
+                    parameters: {
+                        'size': 'Number of bytes to read',
+                        'offset': '(optional) Starting position'
+                    },
+                    returns: 'string',
+                    example: 'file.readBlock(1024, 0);'
+                },
+                'writeBlock': {
+                    description: 'Writes a block of bytes to file',
+                    parameters: {
+                        'data': 'Data to write',
+                        'offset': '(optional) Starting position'
+                    },
+                    returns: 'void',
+                    example: 'file.writeBlock(data, 1024);'
+                },
+                'compress': {
+                    description: 'Compresses file contents',
+                    parameters: {
+                        'algorithm': 'Compression algorithm ("gzip", "bzip2")',
+                        'level': '(optional) Compression level'
+                    },
+                    returns: 'void',
+                    example: 'file.compress("gzip", 9);'
+                }
+            },
+            properties: {
+                'position': {
+                    description: 'Current position in file',
+                    returns: 'integer'
+                },
+                'size': {
+                    description: 'Size of file in bytes',
+                    returns: 'integer'
                 }
             }
         }
