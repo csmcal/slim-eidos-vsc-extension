@@ -1,22 +1,37 @@
 import * as vscode from 'vscode';
 import { EidosHoverProvider } from './providers/hoverProvider';
+import { EidosSymbolProvider } from './providers/symbolProvider';
 import { EidosCompletionProvider } from './providers/completionProvider';
+import { EidosSymbolManager } from './symbolManager';
 
 export function activate(context: vscode.ExtensionContext) {
-    // Register the hover provider for Eidos language
-    const hoverProvider = vscode.languages.registerHoverProvider(
-        'eidos',
-        new EidosHoverProvider()
+    // Create instances of our providers
+    const symbolManager = new EidosSymbolManager();
+    const hoverProvider = new EidosHoverProvider(symbolManager);
+    const symbolProvider = new EidosSymbolProvider(symbolManager);
+    const completionProvider = new EidosCompletionProvider(symbolManager);
+
+    // Register the providers
+    context.subscriptions.push(
+        vscode.languages.registerHoverProvider('eidos', hoverProvider),
+        vscode.languages.registerDocumentSymbolProvider('eidos', symbolProvider),
+        vscode.languages.registerCompletionItemProvider(
+            'eidos',
+            completionProvider,
+            '.',  // Trigger completion on dot for method chains
+            ' ',  // Trigger completion on space for keywords
+            '('   // Trigger completion on open paren for function calls
+        )
     );
 
-    // Register the completion provider
-    const completionProvider = vscode.languages.registerCompletionItemProvider(
-        'eidos',
-        new EidosCompletionProvider(),
-        '.' // Trigger completion on dot for method chains
+    // Register a document change listener to update symbols
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(event => {
+            if (event.document.languageId === 'eidos') {
+                symbolProvider.provideDocumentSymbols(event.document, new vscode.CancellationTokenSource().token);
+            }
+        })
     );
-
-    context.subscriptions.push(hoverProvider, completionProvider);
 }
 
 export function deactivate() {} 

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { EidosDocumentation, Method, Property } from './types';
+import { EidosObject } from './types';
 
 interface DocumentationItem {
     description: string;
@@ -61,6 +62,20 @@ function formatMethodDocumentation(doc: DocumentationItem): string {
     }
 }
 
+// Add this helper function
+function getHoverContent(word: string, context?: string): vscode.MarkdownString[] {
+    const item = context 
+        ? eidosDoc.objects[context]?.methods[word]
+        : (eidosDoc.objects[word] || eidosDoc.functions[word]);
+    
+    return item ? formatHoverDocumentation(item) : [new vscode.MarkdownString()];
+}
+
+// Update getHoverDocumentation to use the content
+export function getHoverDocumentation(word: string, context?: string): vscode.Hover {
+    return new vscode.Hover(getHoverContent(word, context));
+}
+
 // Integration with CompletionProvider
 export function getCompletionItems(prefix: string, context?: string): vscode.CompletionItem[] {
     const items: vscode.CompletionItem[] = [];
@@ -70,7 +85,7 @@ export function getCompletionItems(prefix: string, context?: string): vscode.Com
         for (const [func, details] of Object.entries(eidosDoc.functions)) {
             if (func.startsWith(prefix)) {
                 const item = new vscode.CompletionItem(func, vscode.CompletionItemKind.Function);
-                item.documentation = new vscode.MarkdownString(getHoverDocumentation(func));
+                item.documentation = getHoverContent(func)[0];  // Use first MarkdownString
                 item.detail = `(function) ${func}`;
                 if (details.parameters) {
                     const params = Object.keys(details.parameters);
@@ -87,7 +102,7 @@ export function getCompletionItems(prefix: string, context?: string): vscode.Com
         for (const [method, details] of Object.entries(objectMethods)) {
             if (method.startsWith(prefix)) {
                 const item = new vscode.CompletionItem(method, vscode.CompletionItemKind.Method);
-                item.documentation = new vscode.MarkdownString(getHoverDocumentation(method, context));
+                item.documentation = getHoverContent(method, context)[0];  // Use first MarkdownString
                 item.detail = `(method) ${context}.${method}`;
                 if (details.parameters) {
                     const params = Object.keys(details.parameters);
@@ -103,33 +118,108 @@ export function getCompletionItems(prefix: string, context?: string): vscode.Com
     return items;
 }
 
-
-// Integration with HoverProvider
-export function getHoverDocumentation(word: string, context?: string): string | undefined {
-    try {
-        if (!word) {
-            return undefined;
-        }
-
-        if (context && eidosDoc.objects[context]?.methods[word]) {
-            const method = eidosDoc.objects[context].methods[word];
-            return formatMethodDocumentation(method);
-        }
-
-        if (eidosDoc.functions[word]) {
-            return formatFunctionDocumentation(eidosDoc.functions[word]);
-        }
-
-        return undefined;
-    } catch (e) {
-        vscode.window.showErrorMessage(`Error getting documentation: ${e}`);
-        return undefined;
+function formatHoverDocumentation(item: EidosObject | Method): vscode.MarkdownString[] {
+    const contents: vscode.MarkdownString[] = [];
+    const mainContent = new vscode.MarkdownString();
+    
+    // Add title and type
+    if ('extends' in item) {
+        // It's an object
+        mainContent.appendMarkdown(`## ${getTypeAnnotation('object')}: ${item.description}\n\n`);
+        mainContent.appendMarkdown(`*Extends: \`${item.extends}\`*\n\n`);
+    } else {
+        // It's a method/function
+        mainContent.appendMarkdown(`## ${item.description}\n\n`);
     }
+
+    // Add signature for methods
+    if ('parameters' in item && item.parameters) {
+        const signature = getMethodSignature(item);
+        mainContent.appendCodeblock(signature, 'slim');
+        
+        mainContent.appendMarkdown('\n**Parameters:**\n');
+        for (const [name, desc] of Object.entries(item.parameters)) {
+            mainContent.appendMarkdown(`- \`${name}\`: ${desc}\n`);
+        }
+    }
+
+    // Add return type if present
+    if ('returns' in item && item.returns) {
+        mainContent.appendMarkdown(`\n**Returns:** ${getTypeAnnotation(item.returns)}\n`);
+    }
+
+    // Add example if present
+    if ('example' in item && item.example) {
+        mainContent.appendMarkdown('\n**Example:**\n');
+        mainContent.appendCodeblock(item.example, 'slim');
+    }
+
+    mainContent.isTrusted = true;
+    contents.push(mainContent);
+
+    // Add properties section for objects
+    if ('properties' in item && item.properties) {
+        const propContent = new vscode.MarkdownString();
+        propContent.appendMarkdown('---\n### Properties\n\n');
+        
+        for (const [name, prop] of Object.entries(item.properties) as [string, Property][]) {
+            propContent.appendMarkdown(`**${name}** ${getTypeAnnotation(prop.type)}\n> ${prop.description}\n\n`);
+        }
+        
+        propContent.isTrusted = true;
+        contents.push(propContent);
+    }
+
+    // Add methods section for objects
+    if ('methods' in item && Object.keys(item.methods).length > 0) {
+        const methodContent = new vscode.MarkdownString();
+        methodContent.appendMarkdown('---\n### Methods\n\n');
+        
+        for (const [name, method] of Object.entries(item.methods) as [string, Method][]) {
+            methodContent.appendMarkdown(`**${name}**\n> ${method.description}\n\n`);
+        }
+        
+        methodContent.isTrusted = true;
+        contents.push(methodContent);
+    }
+
+    return contents;
 }
 
+// Helper function to get method signature
+function getMethodSignature(item: Method): string {
+    if (!item.parameters) {
+        return '()';
+    }
+    
+    const params = Object.entries(item.parameters)
+        .map(([name, desc]) => {
+            const isOptional = desc.includes('(optional)');
+            return isOptional ? `[${name}]` : name;
+        })
+        .join(', ');
+    
+    return `(${params})`;
+}
 
+// Helper function for type annotations
+function getTypeAnnotation(type: string): string {
+    if (type.startsWith('object<')) {
+        const objectType = type.slice(7, -1); // Remove 'object<' and '>'
+        return `[\`${type}\`](command:slim.showType?${encodeURIComponent(objectType)})`;
+    }
+    return `\`${type}\``;
+}
 
 export const eidosDoc: EidosDocumentation = {
+    categories: {
+        core: ['Object', 'Dictionary', 'DataFrame'],
+        simulation: ['Genome', 'Individual', 'Subpopulation', 'Species'],
+        genetics: ['MutationType', 'GenomicElementType', 'Mutation', 'Substitution'],
+        spatial: ['SpatialMap', 'InteractionType'],
+        io: ['LogFile'],
+        meta: ['Community']
+    },
     functions: {
         // ==========================================
         // 1. Core Language Functions

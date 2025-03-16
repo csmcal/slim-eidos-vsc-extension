@@ -63,7 +63,11 @@ Currently, there are two methods to install the extension:
 
 ## Release Notes
 
-Only the primary release has been made available so far.
+Still a work in progress.
+
+### 0.2
+
+Updates to snippets, completions, hover.
 
 ### 0.1
 

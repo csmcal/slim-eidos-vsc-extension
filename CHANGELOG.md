@@ -25,11 +25,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-## [0.2] - 2025-03-14
+## [0.2] - 2025-03-16
 
 ### Added
 
 - Further function and object documentation in src/documentation.ts
+- Further snippets in snippets/eidos.json
+- Adjustments to hover, completions, types
 
 ## [0.1] - 2025-03-13
 
